@@ -37,24 +37,27 @@ public class ReservesView extends MouseAdapter {
 		int my = e.getY();
 		
 		if (menuCollision(mx, my, 200, 420, 250, 100)) {
-			
 			if (isValid()) {
 				for(int i = 0; i < 3; i++) {
 						if (selected[i]) {
 							purchase(i);
 						}
 				}
-				
 				reset();
-				
-				game.removeMouseListener(game.buyView);
+				game.removeMouseListener(game.reservesView);
 				game.addMouseListener(game.purchaseView);
+				if (game.getMouseListeners().length != 1) {
+					throw new IllegalStateException("More than one MouseListener");
+				}
 				game.gameState = STATE.Purchase;
 			}
 		} else if (menuCollision(mx, my, 200, 570, 250, 100)) {
 			reset();
 			game.removeMouseListener(game.reservesView);
 			game.addMouseListener(game.humanTurnMenu);
+			if (game.getMouseListeners().length != 1) {
+				throw new IllegalStateException("More than one MouseListener");
+			}
 			game.gameState = STATE.Game;
 		} else if (menuCollision(mx, my, 200, 200, 120, 160)) {
 			if (numReserved >= 1) {

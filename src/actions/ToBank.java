@@ -40,6 +40,9 @@ public class ToBank extends MouseAdapter {
 				reset();
 				game.removeMouseListener(game.toBankView);
 				game.addMouseListener(game.actionTaken);
+				if (game.getMouseListeners().length != 1) {
+					throw new IllegalStateException("More than one MouseListener");
+				}
 				game.gameState = STATE.ActionTaken;	
 			}
 		} else if (menuCollision(mx, my, 150, 525, 50, 50)) {

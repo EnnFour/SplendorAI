@@ -42,6 +42,9 @@ public class NobleVisit extends MouseAdapter {
 				reset();
 				game.removeMouseListener(game.nobleView);
 				game.addMouseListener(game.aiView);
+				if (game.getMouseListeners().length != 1) {
+					throw new IllegalStateException("More than one MouseListener");
+				}
 				game.gameState = STATE.AITurn;
 			}
 		} else if (menuCollision(mx, my, 1375, 100, 100, 100) && b.getNobles().size() >= 1) {

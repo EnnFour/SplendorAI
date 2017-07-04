@@ -63,21 +63,33 @@ public class HumanActionTaken extends MouseAdapter {
 			reset();
 			game.removeMouseListener(game.actionTaken);
 			game.addMouseListener(game.toBankView);
+			if (game.getMouseListeners().length != 1) {
+				throw new IllegalStateException("More than one MouseListener");
+			}
 			game.gameState = STATE.ToBank;
 		} else if (payment) {
 			reset();
 			game.removeMouseListener(game.actionTaken);
 			game.addMouseListener(game.purchaseView);
+			if (game.getMouseListeners().length != 1) {
+				throw new IllegalStateException("More than one MouseListener");
+			}
 			game.gameState = STATE.Purchase;
 		} else if (nobleVisit){
 			reset();
 			game.removeMouseListener(game.actionTaken);
 			game.addMouseListener(game.nobleView);
+			if (game.getMouseListeners().length != 1) {
+				throw new IllegalStateException("More than one MouseListener");
+			}
 			game.gameState = STATE.Noble;
 		} else {
 			reset();
 			game.removeMouseListener(game.actionTaken);
 			game.addMouseListener(game.aiView);
+			if (game.getMouseListeners().length != 1) {
+				throw new IllegalStateException("More than one MouseListener");
+			}
 			game.gameState = STATE.AITurn;
 		}
 		

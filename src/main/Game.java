@@ -76,6 +76,9 @@ public class Game extends Canvas implements Runnable{
 		gameOverView = new actions.GameOver(this, handler);
 		
 		this.addMouseListener(mainMenu);
+		if (this.getMouseListeners().length != 1) {
+			throw new IllegalStateException("More than one MouseListener");
+		}
 		endReached = false;
 		turnsRemaining = -1;
 	}
@@ -222,6 +225,9 @@ public class Game extends Canvas implements Runnable{
 		aiView = new actions.AITurn(this, handler);
 		nobleView = new actions.NobleVisit(this, handler);
 		this.addMouseListener(mainMenu);
+		if (this.getMouseListeners().length != 1) {
+			throw new IllegalStateException("More than one MouseListener");
+		}
 		endReached = false;
 		turnsRemaining = -1;
 	}

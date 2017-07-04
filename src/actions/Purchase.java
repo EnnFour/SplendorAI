@@ -45,6 +45,9 @@ public class Purchase extends MouseAdapter{
 				h.setVictoryPoints(h.getVictoryPoints() + h.getRecentPurchase().getVictoryPoints());
 				game.removeMouseListener(game.purchaseView);
 				game.addMouseListener(game.actionTaken);
+				if (game.getMouseListeners().length != 1) {
+					throw new IllegalStateException("More than one MouseListener");
+				}
 				game.gameState = STATE.ActionTaken;	
 			}
 		} else if (menuCollision(mx, my, 150, 525, 50, 50)) {

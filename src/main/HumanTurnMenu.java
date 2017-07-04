@@ -26,31 +26,49 @@ public class HumanTurnMenu extends MouseAdapter {
 			//view opponent
 			game.removeMouseListener(game.humanTurnMenu);
 			game.addMouseListener(game.oppView);
+			if (game.getMouseListeners().length != 1) {
+				throw new IllegalStateException("More than one MouseListener");
+			}
 			game.gameState = STATE.ViewOpp;
 		} else if(menuCollision(mx, my, 1550, 190, 300, 100)) {
 			//take 3
 			game.removeMouseListener(game.humanTurnMenu);
 			game.addMouseListener(game.threeView);
+			if (game.getMouseListeners().length != 1) {
+				throw new IllegalStateException("More than one MouseListener");
+			}
 			game.gameState = STATE.Take3;
 		} else if(menuCollision(mx, my, 1550, 340, 300, 100)) {
 			//take 2
 			game.removeMouseListener(game.humanTurnMenu);
 			game.addMouseListener(game.twoView);
+			if (game.getMouseListeners().length != 1) {
+				throw new IllegalStateException("More than one MouseListener");
+			}
 			game.gameState = STATE.Take2;
 		} else if(menuCollision(mx, my, 1550, 490, 300, 100)) {
 			//buy
 			game.removeMouseListener(game.humanTurnMenu);
 			game.addMouseListener(game.buyView);
+			if (game.getMouseListeners().length != 1) {
+				throw new IllegalStateException("More than one MouseListener");
+			}
 			game.gameState = STATE.Buy;
 		} else if(menuCollision(mx, my, 1550, 640, 300, 100)) {
 			//reserve
 			game.removeMouseListener(game.humanTurnMenu);
 			game.addMouseListener(game.buyView);
+			if (game.getMouseListeners().length != 1) {
+				throw new IllegalStateException("More than one MouseListener");
+			}
 			game.gameState = STATE.Buy;
 		} else if(menuCollision(mx, my, 1550, 790, 300, 100)) {
 			//view reserved
 			game.removeMouseListener(game.humanTurnMenu);
 			game.addMouseListener(game.reservesView);
+			if (game.getMouseListeners().length != 1) {
+				throw new IllegalStateException("More than one MouseListener");
+			}
 			game.gameState = STATE.Reserves;
 		} else if(menuCollision(mx, my, 1550, 940, 300, 100)) {
 			//main menu
@@ -111,6 +129,9 @@ public class HumanTurnMenu extends MouseAdapter {
 	private void gameOver() {
 		game.removeMouseListener(game.humanTurnMenu);
 		game.addMouseListener(game.gameOverView);
+		if (game.getMouseListeners().length != 1) {
+			throw new IllegalStateException("More than one MouseListener");
+		}
 		game.gameState = STATE.GameOver;
 	}
 	

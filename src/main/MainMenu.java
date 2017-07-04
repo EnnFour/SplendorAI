@@ -29,18 +29,27 @@ public class MainMenu extends MouseAdapter{
 				create1();
 				game.removeMouseListener(game.mainMenu);
 				game.addMouseListener(game.humanTurnMenu);
+				if (game.getMouseListeners().length != 1) {
+					throw new IllegalStateException("More than one MouseListener");
+				}
 				game.gameState = STATE.Game;
 			} else if(menuCollision(mx, my, 1315, 575, 250, 100)) {
 				//vs 2 ai
 				create2();
 				game.removeMouseListener(game.mainMenu);
 				game.addMouseListener(game.humanTurnMenu);
+				if (game.getMouseListeners().length != 1) {
+					throw new IllegalStateException("More than one MouseListener");
+				}
 				game.gameState = STATE.Game;
 			} else if (menuCollision(mx, my, 835, 750, 250, 100)) {
 				//vs 3 ai
 				create3();
 				game.removeMouseListener(game.mainMenu);
 				game.addMouseListener(game.humanTurnMenu);
+				if (game.getMouseListeners().length != 1) {
+					throw new IllegalStateException("More than one MouseListener");
+				}
 				game.gameState = STATE.Game;
 			}
 	}

@@ -29,6 +29,9 @@ public class OpponentView extends MouseAdapter {
 		if (menuCollision(e.getX(), e.getY(), 1550, 900, 250, 100)) {
 			game.removeMouseListener(game.oppView);
 			game.addMouseListener(game.humanTurnMenu);
+			if (game.getMouseListeners().length != 1) {
+				throw new IllegalStateException("More than one MouseListener");
+			}
 			game.gameState = STATE.Game;
 		}
 	}

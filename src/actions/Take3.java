@@ -84,6 +84,9 @@ public class Take3 extends MouseAdapter {
 				reset();
 				game.removeMouseListener(game.threeView);
 				game.addMouseListener(game.actionTaken);
+				if (game.getMouseListeners().length != 1) {
+					throw new IllegalStateException("More than one MouseListener");
+				}
 				game.gameState = STATE.ActionTaken;
 			}	
 		} else if (menuCollision(mx, my, 300, 600, 250, 100)) {
@@ -91,6 +94,9 @@ public class Take3 extends MouseAdapter {
 			reset();
 			game.removeMouseListener(game.threeView);
 			game.addMouseListener(game.humanTurnMenu);
+			if (game.getMouseListeners().length != 1) {
+				throw new IllegalStateException("More than one MouseListener");
+			}
 			game.gameState = STATE.Game;
 			
 		} 

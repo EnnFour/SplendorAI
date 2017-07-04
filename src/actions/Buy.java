@@ -98,11 +98,12 @@ public class Buy extends MouseAdapter {
 						}
 					}
 				}
-				
 				reset();
-				
 				game.removeMouseListener(game.buyView);
 				game.addMouseListener(game.purchaseView);
+				if (game.getMouseListeners().length != 1) {
+					throw new IllegalStateException("More than one MouseListener");
+				}
 				game.gameState = STATE.Purchase;
 			}
 			
@@ -116,11 +117,12 @@ public class Buy extends MouseAdapter {
 						}
 					}
 				}
-				
 				reset();
-				
 				game.removeMouseListener(game.buyView);
 				game.addMouseListener(game.actionTaken);
+				if (game.getMouseListeners().length != 1) {
+					throw new IllegalStateException("More than one MouseListener");
+				}
 				game.gameState = STATE.ActionTaken;
 			}
 			
@@ -129,6 +131,9 @@ public class Buy extends MouseAdapter {
 			reset();
 			game.removeMouseListener(game.buyView);
 			game.addMouseListener(game.humanTurnMenu);
+			if (game.getMouseListeners().length != 1) {
+				throw new IllegalStateException("More than one MouseListener");
+			}
 			game.gameState = STATE.Game;
 		}
 		
