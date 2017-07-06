@@ -125,7 +125,10 @@ public class AIPlayer extends Player{
 	
 	private void reserve() {
 		this.getReserves().add(topChoices[0]);
-		this.addCoins(5, 1);
+		if (b.getCoins()[5] > 0) {
+			this.addCoins(5, 1);
+			b.removeCoins(5, 1);
+		}
 	}
 	
 	private void purchaseAnything() {
@@ -180,54 +183,7 @@ public class AIPlayer extends Player{
 		}
 		
 		for (int i = 0; i < 5; i++) {
-			if (topChoices[0].getCost()[i] >= 2 + this.getCoins()[i] + this.getCardTypes()[i]) {
-				value = (0.5) * (1 + boolToInt(isMostCost(topChoices[0], i)));
-				
-				if(topChoices[1].getCost()[i] >= 2 + this.getCoins()[i] + this.getCardTypes()[i]) {
-					value += (0.8) * (0.5) * (1 + boolToInt(isMostCost(topChoices[1], i)));
-				}
-				if(topChoices[1].getCost()[i] == 1 + this.getCoins()[i] + this.getCardTypes()[i]) {
-					value += (0.5) * (0.5) * (1 + boolToInt(isMostCost(topChoices[1], i)));
-				}
-				if(topChoices[2].getCost()[i] >= 2 + this.getCoins()[i] + this.getCardTypes()[i]) {
-					value += (0.7) * (0.5) * (1 + boolToInt(isMostCost(topChoices[2], i)));
-				}
-				if(topChoices[2].getCost()[i] == 2 + this.getCoins()[i] + this.getCardTypes()[i]) {
-					value += (0.4) * (0.5) * (1 + boolToInt(isMostCost(topChoices[2], i)));
-				}	
-			} else if (topChoices[0].getCost()[i] == 1 + this.getCoins()[i] + this.getCardTypes()[i]) {
-				value = (0.8) * (0.5) * (1 + boolToInt(isMostCost(topChoices[0], i)));
-				
-				if(topChoices[1].getCost()[i] >= 2 + this.getCoins()[i] + this.getCardTypes()[i]) {
-					value += (0.8) * (0.5) * (1 + boolToInt(isMostCost(topChoices[1], i)));
-				}
-				if(topChoices[1].getCost()[i] == 1 + this.getCoins()[i] + this.getCardTypes()[i]) {
-					value += (0.5) * (0.5) * (1 + boolToInt(isMostCost(topChoices[1], i)));
-				}
-				if(topChoices[2].getCost()[i] >= 2 + this.getCoins()[i] + this.getCardTypes()[i]) {
-					value += (0.7) * (0.5) * (1 + boolToInt(isMostCost(topChoices[2], i)));
-				}
-				if(topChoices[2].getCost()[i] == 2 + this.getCoins()[i] + this.getCardTypes()[i]) {
-					value += (0.4) * (0.5) * (1 + boolToInt(isMostCost(topChoices[2], i)));
-				}	
-			} else {
-				value = 0;
-				if(topChoices[1].getCost()[i] >= 2 + this.getCoins()[i] + this.getCardTypes()[i]) {
-					value += (0.8) * (0.5) * (1 + boolToInt(isMostCost(topChoices[1], i)));
-				}
-				if(topChoices[1].getCost()[i] == 1 + this.getCoins()[i] + this.getCardTypes()[i]) {
-					value += (0.5) * (0.5) * (1 + boolToInt(isMostCost(topChoices[1], i)));
-				}
-				if(topChoices[2].getCost()[i] >= 2 + this.getCoins()[i] + this.getCardTypes()[i]) {
-					value += (0.7) * (0.5) * (1 + boolToInt(isMostCost(topChoices[2], i)));
-				}
-				if(topChoices[2].getCost()[i] == 2 + this.getCoins()[i] + this.getCardTypes()[i]) {
-					value += (0.4) * (0.5) * (1 + boolToInt(isMostCost(topChoices[2], i)));
-				}	
-			}
-			
-			if (!validDoubles[i]) value = -5000;
-			colorVals.add(new MapNode<Integer, Double>(i, -1 * value));
+			if (validDoubles[i]) colorVals.add(new MapNode<Integer, Double>(i, -1 * computeTakeTwoValue(i)));
 		}
 		
 		for (int i = 0; i < 5; i++) {
@@ -245,8 +201,7 @@ public class AIPlayer extends Player{
 				value += (0.6) * (0.5) * (1 + boolToInt(isMostCost(topChoices[0], i)));
 			}
 		
-			if (!validSingles[i]) value = -5000;
-			colorVals.add(new MapNode<Integer, Double>(10 + i, value));
+			if (validSingles[i]) colorVals.add(new MapNode<Integer, Double>(10 + i, value));
 		}
 		
 		int[] choices = new int[]{0,0,0,0,0};
@@ -389,14 +344,17 @@ public class AIPlayer extends Player{
 	}
 
 	private void takeCoinsGivenChoices(int[] choices) {
-		for (int i = 0; i < 5; i++) {
-			if (choices[i] == 1) {
-				b.getCoins()[i] -= 1;
-				this.getCoins()[i] += 1;
-			} else if (choices[i] == 2) {
-				b.getCoins()[i] -= 2;
-				this.getCoins()[i] += 2;
+		
+		if (choicesNotValid(choices)) {
+			for (int i : choices) {
+				System.out.print(i + "   ");
 			}
+			throw new IllegalStateException("AI is trying to take an illegal amount of coins");
+		}
+		
+		for (int i = 0; i < 5; i++) {
+				b.getCoins()[i] -= choices[i];
+				this.getCoins()[i] += choices[i];
 		}
 	}
 
@@ -413,5 +371,39 @@ public class AIPlayer extends Player{
 	private int boolToInt(boolean b) {
 		if (b) return 1;
 		return 0;
+	}
+	
+	private boolean choicesNotValid(int[] a) {
+		boolean ans = true;
+	
+		for (int i = 0; i < 5; i++) {
+			ans = ans && (b.getCoins()[i] - a[i] >= 0);
+		}
+		
+		return !ans;
+	}
+	
+	private double computeTakeTwoValue(int i) {
+		double val = 0;
+		
+		if (topChoices[0].getCost()[i] >= 2 + this.getCoins()[i] + this.getCardTypes()[i]) {
+			val += (0.5) * (1 + boolToInt(isMostCost(topChoices[0], i)));
+		} else if (topChoices[0].getCost()[i] == 1 + this.getCoins()[i] + this.getCardTypes()[i]) {
+			val += (0.8) * (0.5) * (1 + boolToInt(isMostCost(topChoices[0], i)));
+		}
+		
+		if (topChoices[1].getCost()[i] >= 2 + this.getCoins()[i] + this.getCardTypes()[i]) {
+			val += (0.8) * (0.5) * (1 + boolToInt(isMostCost(topChoices[0], i)));
+		} else if (topChoices[1].getCost()[i] == 1 + this.getCoins()[i] + this.getCardTypes()[i]) {
+			val += (0.5) * (0.5) * (1 + boolToInt(isMostCost(topChoices[0], i)));
+		}
+		
+		if (topChoices[2].getCost()[i] >= 2 + this.getCoins()[i] + this.getCardTypes()[i]) {
+			val += (0.7) * (0.5) * (1 + boolToInt(isMostCost(topChoices[0], i)));
+		} else if (topChoices[2].getCost()[i] == 1 + this.getCoins()[i] + this.getCardTypes()[i]) {
+			val += (0.4) * (0.5) * (1 + boolToInt(isMostCost(topChoices[0], i)));
+		}
+		
+		return val;
 	}
 }

@@ -35,24 +35,20 @@ public class AITurn extends MouseAdapter{
 	
 	public void render(Graphics g) {
 		takeTurns();
-		
+
 		if (game.getTurnsRemaining() == 0 && game.getEndReached()) {
 			game.removeMouseListener(game.aiView);
 			game.addMouseListener(game.gameOverView);
-			
 			if (game.getMouseListeners().length != 1) {
 				throw new IllegalStateException("More than one MouseListener");
 			}
-			
 			game.gameState = STATE.GameOver;
 		} else {
 			game.removeMouseListener(game.aiView);
 			game.addMouseListener(game.humanTurnMenu);
-			
 			if (game.getMouseListeners().length != 1) {
 				throw new IllegalStateException("More than one MouseListener");
 			}
-			
 			game.gameState = STATE.Game;
 		}
 	}

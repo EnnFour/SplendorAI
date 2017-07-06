@@ -87,7 +87,7 @@ public class HumanTurnMenu extends MouseAdapter {
 	
 	public void render(Graphics g) {
 		
-		if (game.getEndReached() && game.getTurnsRemaining() == 0) {
+		if (game.getEndReached()) {
 			gameOver();
 			return;
 		}
