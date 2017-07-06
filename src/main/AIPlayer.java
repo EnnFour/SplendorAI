@@ -208,6 +208,10 @@ public class AIPlayer extends Player{
 		
 		int temp = colorVals.poll().getKey();
 		if (temp < 10) choices[temp] = 2;
+		if (numTrue(validSingles) == 1) {
+			while (temp > 10) temp = colorVals.poll().getKey();
+			choices[temp] = 2;
+		}
 		else {
 			choices[temp - 10] = 1;
 			temp = colorVals.poll().getKey();
@@ -381,6 +385,14 @@ public class AIPlayer extends Player{
 		}
 		
 		return !ans;
+	}
+	
+	private int numTrue(boolean[] a) {
+		int i = 0;
+		for (boolean b : a) {
+			if (b) i++;
+		}
+		return i;
 	}
 	
 	private double computeTakeTwoValue(int i) {

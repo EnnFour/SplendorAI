@@ -7,6 +7,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import main.Game;
+import main.Game.STATE;
 import main.GameObject;
 import main.Handler;
 import main.ID;
@@ -25,7 +26,18 @@ public class GameOver extends MouseAdapter {
 	}
 	
 	public void mousePressed(MouseEvent e) {
+		int mx = e.getX();
+		int my = e.getY();
 		
+		if (menuCollision(mx, my, 740, 700, 350, 150)) {
+			reset();
+			game.removeMouseListener(game.gameOverView);
+			game.addMouseListener(game.mainMenu);
+			if (game.getMouseListeners().length != 1) {
+				throw new IllegalStateException("More than one MouseListener");
+			}
+			game.gameState = STATE.Main;
+		}
 	}
 	
 	public void mouseReleased(MouseEvent e) {
@@ -42,21 +54,24 @@ public class GameOver extends MouseAdapter {
 		
 		g.setColor(Color.BLACK);
 		g.setFont(new Font("arial", 1, 90));
-		g.drawString("Game Over!", 100, 100);
-		
+		g.drawString("Game Over!", 660, 100);
+		g.setFont(new Font("arial", 1, 60));
 		for (GameObject o : handler.getObjects()) {
 			if (o.getID() == ID.Player1) {
-				g.drawString("You had " + Integer.toString(((Player) o).getVictoryPoints()) + " Victory Points", 200, 200);
+				g.drawString("You had " + Integer.toString(((Player) o).getVictoryPoints()) + " Victory Points", 550, 200);
 			} else if (o.getID() == ID.Player2) {
-				
+				g.drawString("Player 2 had " + Integer.toString(((Player) o).getVictoryPoints()) + " Victory Points", 500, 280);
 			} else if (o.getID() == ID.Player3) {
-				
+				g.drawString("Player 3 had " + Integer.toString(((Player) o).getVictoryPoints()) + " Victory Points", 500, 360);
 			} else if (o.getID() == ID.Player4) {
-				
+				g.drawString("Player 4 had " + Integer.toString(((Player) o).getVictoryPoints()) + " Victory Points", 500, 440);
 			}
 		}
 		
-		
+		g.setColor(Color.WHITE);
+		g.fillRect(740, 700, 350, 150);
+		g.setColor(Color.BLACK);
+		g.drawString("Main Menu", 760, 790);
 		
 	}
 	
@@ -64,5 +79,15 @@ public class GameOver extends MouseAdapter {
 		
 	}
 	
+	/** Detect whether or not the mouse at (mx, my) intersects the rectangle. */
+	private boolean menuCollision(int mx, int my, int x, int y, int w, int h) {
+		if(mx >= x && mx <= x + w) {
+			if(my >= y && my <= y + h){
+				return true;
+			} 
+			return false;
+		}
+		return false;
+	}
 
 }

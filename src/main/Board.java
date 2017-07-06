@@ -295,9 +295,9 @@ public class Board extends GameObject{
 		int secondRemain = Math.max(second.size() - 4, 0);
 		int thirdRemain = Math.max(third.size() - 4, 0);
 		
-		g.drawString(Integer.toString(firstRemain), 140, 180);
+		g.drawString(Integer.toString(thirdRemain), 140, 180);
 		g.drawString(Integer.toString(secondRemain), 140, 380);
-		g.drawString(Integer.toString(thirdRemain), 140, 580);
+		g.drawString(Integer.toString(firstRemain), 140, 580);
 	}
 	
 	private void renderCoins(Graphics g) {
