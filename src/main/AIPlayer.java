@@ -80,6 +80,7 @@ public class AIPlayer extends Player{
 		for (int i = 0; i < 3; i++) {
 			if (isPurchaseable(topChoices[i])) {
 				purchase(topChoices[i]);
+				returnCoinsToBank();
 				purchaseNoble();
 				checkEndCondition();
 				return;
@@ -88,6 +89,7 @@ public class AIPlayer extends Player{
 		
 		if (canTakeThree()) {
 			optimizeTakeThree();
+			returnCoinsToBank();
 			purchaseNoble();
 			checkEndCondition();
 			return;
@@ -95,6 +97,7 @@ public class AIPlayer extends Player{
 		
 		if (canTakeTwo()) {
 			optimizeTakeTwo();
+			returnCoinsToBank();
 			purchaseNoble();
 			checkEndCondition();
 			return;
@@ -102,6 +105,7 @@ public class AIPlayer extends Player{
 		
 		if (canPurchaseAnything()) {
 			purchaseAnything();
+			returnCoinsToBank();
 			purchaseNoble();
 			checkEndCondition();
 			return;
@@ -109,11 +113,21 @@ public class AIPlayer extends Player{
 		
 		if (canReserve()) {
 			reserve();
+			returnCoinsToBank();
 			purchaseNoble();
 			checkEndCondition();
 			return;
 		}
 		
+		if (canTakeOne()) {
+			optimizeTakeOne();
+			returnCoinsToBank();
+			purchaseNoble();
+			checkEndCondition();
+			return;
+		}
+		
+		returnCoinsToBank();
 		purchaseNoble();
 		checkEndCondition();
 		return;
@@ -201,7 +215,7 @@ public class AIPlayer extends Player{
 				value += (0.6) * (0.5) * (1 + boolToInt(isMostCost(topChoices[0], i)));
 			}
 		
-			if (validSingles[i]) colorVals.add(new MapNode<Integer, Double>(10 + i, value));
+			if (validSingles[i]) colorVals.add(new MapNode<Integer, Double>(10 + i, -1 * value));
 		}
 		
 		int[] choices = new int[]{0,0,0,0,0};
@@ -417,5 +431,80 @@ public class AIPlayer extends Player{
 		}
 		
 		return val;
+	}
+
+	private void returnCoinsToBank() {
+		//While we have more coins than 10, we will remove the least useful
+		PriorityQueue<MapNode<Integer, Double>> colorVals = new PriorityQueue<MapNode<Integer, Double>> (new Comparator<MapNode<Integer, Double>>() {
+			@Override
+			public int compare(MapNode<Integer, Double> arg0, MapNode<Integer, Double> arg1) {
+				return (int) Double.compare(arg0.getValue(), arg1.getValue());
+			}
+		});
+		
+		while (this.getNumCoins() > 10) {
+			
+			for (int i = 0; i < 5; i++) {
+				double value = 0;
+				
+				if (topChoices[0].getCost()[i] > 0) {
+					value += (0.5) * (1 + boolToInt(isMostCost(topChoices[0], i)));
+				}
+				if (topChoices[1].getCost()[i] > 0) {
+					value += (0.7) * (0.5) * (1 + boolToInt(isMostCost(topChoices[1], i)));
+				}
+				if (topChoices[2].getCost()[i] > 0) {
+					value += (0.6) * (0.5) * (1 + boolToInt(isMostCost(topChoices[2], i)));
+				}
+				
+				colorVals.add(new MapNode<Integer, Double>(i, value));
+			}
+			
+			int col = colorVals.poll().getKey();
+			b.removeCoins(col, -1);
+			this.addCoins(col, -1);
+
+		}
+	}
+
+	private boolean canTakeOne() {
+		for (int i : b.getCoins()) {
+			if (i > 0) return true;
+		}
+		return false;
+	}
+	
+	private void optimizeTakeOne() {
+		
+		PriorityQueue<MapNode<Integer, Double>> colorVals = new PriorityQueue<MapNode<Integer, Double>> (new Comparator<MapNode<Integer, Double>>() {
+			@Override
+			public int compare(MapNode<Integer, Double> arg0, MapNode<Integer, Double> arg1) {
+				return (int) Double.compare(arg0.getValue(), arg1.getValue());
+			}
+		});
+		
+		int[] choices = new int[5];
+		
+		for (int i = 0; i < 5; i++) {
+			if (b.getCoins()[i] > 0) {
+				double value = 0;
+				
+				if (topChoices[0].getCost()[i] > 0) {
+					value = (0.5) * (1 + boolToInt(isMostCost(topChoices[0], i)));
+				}
+				if (topChoices[1].getCost()[i] > 0) {
+					value = (0.7) * (0.5) * (1 + boolToInt(isMostCost(topChoices[1], i)));
+				}
+				if (topChoices[2].getCost()[i] > 0) {
+					value = (0.6) * (0.5) * (1 + boolToInt(isMostCost(topChoices[2], i)));
+				}
+				
+				colorVals.add(new MapNode<Integer, Double>(i, -1 * value));
+			}
+			
+			choices[colorVals.poll().getKey()] = 1;
+			takeCoinsGivenChoices(choices);
+		}
+		
 	}
 }
