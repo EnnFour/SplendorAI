@@ -152,7 +152,7 @@ public class Take2 extends MouseAdapter {
 		g.setColor(Color.BLACK);
 		g.fillOval(200, 200, 150, 150);
 		g.setFont(new Font("arial", 1, 90));
-		g.drawString("Take 2", 700, 130);
+		g.drawString("Take Same", 700, 130);
 		
 		g.setColor(Color.BLUE);
 		g.fillOval(400, 200, 150, 150);

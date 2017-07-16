@@ -106,8 +106,8 @@ public class HumanTurnMenu extends MouseAdapter {
 		
 		g.setColor(Color.BLACK);
 		g.drawString("View Opponent", 1590, 100);
-		g.drawString("Take 3", 1650, 250);
-		g.drawString("Take 2", 1650, 400);
+		g.drawString("Take Unique", 1610, 250);
+		g.drawString("Take Same", 1610, 400);
 		g.drawString("Buy", 1675, 550);
 		g.drawString("Reserve", 1650, 700);
 		g.drawString("View Reserved", 1600, 850);

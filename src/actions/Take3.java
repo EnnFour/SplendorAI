@@ -115,7 +115,7 @@ public class Take3 extends MouseAdapter {
 			}
 		}
 		
-		if (numPicked != 3) return false;
+		if (numPicked < 1 || numPicked > 3) return false;
 		for(int i = 0; i < 5; i++) {
 			if (picked[i] > b.getCoins()[i]) return false;
 		}
@@ -141,7 +141,7 @@ public class Take3 extends MouseAdapter {
 		g.setColor(Color.BLACK);
 		g.fillOval(200, 200, 150, 150);
 		g.setFont(new Font("arial", 1, 90));
-		g.drawString("Take 3", 700, 130);
+		g.drawString("Take Unique", 700, 130);
 		
 		g.setColor(Color.BLUE);
 		g.fillOval(400, 200, 150, 150);
