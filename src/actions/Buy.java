@@ -24,6 +24,7 @@ public class Buy extends MouseAdapter {
 	private int numSelected;
 	private int cost[];
 	
+	/** Initialize the menu. Allows access to the game and handler. Select 0 cards initially. */
 	public Buy(Game g, Handler handler) {
 		game = g;
 		this.handler = handler;
@@ -36,6 +37,7 @@ public class Buy extends MouseAdapter {
 		numSelected = 0;
 	}
 	
+	/** Detect which clickable item has been pressed and resolve the corresponding action.*/
 	public void mousePressed(MouseEvent e) {
 		int mx = e.getX();
 		int my = e.getY();
@@ -146,7 +148,8 @@ public class Buy extends MouseAdapter {
 	public void tick() {
 		
 	}
-	
+
+	/** Render the Buy Menu using Game Graphics. Displays all necessary information to players. */
 	public void render(Graphics g) {
 		for (GameObject o : handler.getObjects()) {
 			if (o.getID() == ID.Board) {
@@ -297,6 +300,7 @@ public class Buy extends MouseAdapter {
 		b.removeCoins(5, 1);
 	}
 
+	/** Clear all selections. */
 	private void reset() {
 		cards = new boolean[3][4];
 		for(int i = 0; i < 3; i++) {

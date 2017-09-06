@@ -25,6 +25,7 @@ public class NobleVisit extends MouseAdapter {
 	private int[] cost;
 	private int[] have;
 	
+	/** Constructor which allows access to the game and the handler. */
 	public NobleVisit(Game game, Handler handler) {
 		this.game = game;
 		this.handler = handler;
@@ -32,6 +33,7 @@ public class NobleVisit extends MouseAdapter {
 		numSelected = 0;
 	}
 	
+	/** Perform actions based on what was clicked. */
 	public void mousePressed(MouseEvent e) {
 		int mx = e.getX();
 		int my = e.getY();
@@ -68,6 +70,7 @@ public class NobleVisit extends MouseAdapter {
 		
 	}
 	
+	/** Render the menu. */
 	public void render(Graphics g) {
 		for(GameObject o : handler.getObjects()) {
 			if (o.getID() ==ID.Player1) h = (HumanPlayer) o;
@@ -120,12 +123,14 @@ public class NobleVisit extends MouseAdapter {
 		g.drawString(h.getCardTypes()[4] + " Cards", 1120, 150);
 	}
 	
+	/** Modify the selections array. */
 	private void handleSelection(int i) {
 		if (selected[i]) numSelected--;
 		else numSelected++;
 		selected[i] = !selected[i];
 	}
 	
+	/** Remove all modifications to the menu. */
 	private void reset() {
 		selected = new boolean[]{false, false, false, false, false};
 		numSelected = 0;
@@ -142,6 +147,7 @@ public class NobleVisit extends MouseAdapter {
 		return false;
 	}
 
+	/** Determine whether or not the move is valid. */
 	private boolean isValid() {
 		if (numSelected != 1) return false;
 		for (int i = 0; i < 5; i++) {
@@ -155,6 +161,7 @@ public class NobleVisit extends MouseAdapter {
 		return (temp[0] >= 0 && temp[1] >= 0 && temp[2] >= 0 && temp[3] >= 0 && temp[4] >= 0);
 	}
 
+	/** Award a noble. */
 	private void giveNoble() {
 		for (int i = 0; i < 5; i++) {
 			if (selected[i]) {

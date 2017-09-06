@@ -33,6 +33,7 @@ public class AITurn extends MouseAdapter{
 		
 	}
 	
+	/** Perform all AI Actions. */
 	public void render(Graphics g) {
 		takeTurns();
 
@@ -52,7 +53,8 @@ public class AITurn extends MouseAdapter{
 			game.gameState = STATE.Game;
 		}
 	}
-	
+
+	/** For each AI in the game, take their turns in order. */
 	private void takeTurns() {
 		
 		for (GameObject o : handler.getObjects()) {

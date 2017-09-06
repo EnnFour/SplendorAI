@@ -26,7 +26,7 @@ public class Purchase extends MouseAdapter{
 	private Board b;
 	private int[] cards;
 	
-	
+	/** Constructor which gives access to the game and handler. */
 	public Purchase(Game game, Handler handler) {
 		this.game = game;
 		this.handler = handler;
@@ -35,6 +35,7 @@ public class Purchase extends MouseAdapter{
 		cards = new int[]{0,0,0,0,0};
 	}
 	
+	/** Determine what was pressed and perform corresponding actions. */
 	public void mousePressed(MouseEvent e) {
 		int mx = e.getX();
 		int my = e.getY();
@@ -85,6 +86,7 @@ public class Purchase extends MouseAdapter{
 		
 	}
 	
+	/** Render the Menu. */
 	public void render(Graphics g) {
 		for (GameObject o : handler.getObjects()) {
 			if (o.getID() == ID.Player1) h = (HumanPlayer) o;
@@ -223,6 +225,7 @@ public class Purchase extends MouseAdapter{
 		g.drawString("Confirm", 1550, 160);
 	}
 	
+	/** Add money to the purchase offer. */
 	private void addToOffer(int coin, int amt) {
 		if(coin == 5){
 			if(offer[coin] + amt >= 0 && coins[coin] - amt >= 0) {
@@ -249,6 +252,7 @@ public class Purchase extends MouseAdapter{
 		return false;
 	}
 	
+	/** Determine whether the move is valid. */
 	private boolean isValid() {
 		int x = 0;
 		int y = 0;
@@ -261,6 +265,7 @@ public class Purchase extends MouseAdapter{
 		return (x == y);
 	}
 	
+	/** Clear all selections from the menu. */
 	private void reset() {
 		h.setDebt(new int[]{0,0,0,0,0});
 		offer = new int[]{0,0,0,0,0,0};

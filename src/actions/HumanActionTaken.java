@@ -24,6 +24,7 @@ public class HumanActionTaken extends MouseAdapter {
 	private boolean nobleVisit;
 	private Board b;
 	
+	/** Constructor allowing access to the game and the handler. */
 	public HumanActionTaken(Game game, Handler handler) {
 		this.game = game;
 		this.handler = handler;
@@ -44,6 +45,7 @@ public class HumanActionTaken extends MouseAdapter {
 		
 	}
 	
+	/** Perform all necessary post-turn actions. */
 	public void render(Graphics g) {
 		
 		for(GameObject o : handler.getObjects()) {
@@ -106,6 +108,7 @@ public class HumanActionTaken extends MouseAdapter {
 		return false;
 	}
 	
+	/** Check for victory and remove all modifications to the menu. */
 	private void reset() {
 		if (h.getVictoryPoints() >= 15) {
 			game.setEndReached(true);
@@ -119,6 +122,7 @@ public class HumanActionTaken extends MouseAdapter {
 		nobleVisit = false;
 	}
 	
+	/**  Determine if a noble will visit. */
 	private boolean noblesWillVisit() {
 		for (Noble n : b.getNobles()) {
 			int[] cost = n.getCost();

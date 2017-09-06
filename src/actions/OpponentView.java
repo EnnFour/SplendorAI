@@ -19,12 +19,14 @@ public class OpponentView extends MouseAdapter {
 	private Handler handler;
 	private int offset;
 	
+	/** Constructor giving access to the game and the handler. */
 	public OpponentView(Game g, Handler handler) {
 		game = g;
 		this.handler = handler;
 		offset = 0;
 	}
 	
+	/** Perform actions based on what was clicked. */
 	public void mousePressed(MouseEvent e) {
 		if (menuCollision(e.getX(), e.getY(), 1550, 900, 250, 100)) {
 			game.removeMouseListener(game.oppView);
@@ -35,6 +37,7 @@ public class OpponentView extends MouseAdapter {
 			game.gameState = STATE.Game;
 		}
 	}
+	
 	
 	public void mouseReleased(MouseEvent e) {
 		
@@ -55,6 +58,7 @@ public class OpponentView extends MouseAdapter {
 		return false;
 	}
 	
+	/** Render the menu. */
 	public void render(Graphics g) {
 		for(GameObject o : handler.getObjects()) {
 			if (o.getID() != ID.Player1 && o.getID() != ID.Board) {
@@ -70,6 +74,7 @@ public class OpponentView extends MouseAdapter {
 		
 	}
 	
+	/** Render an individual player. */ 
 	private void renderPlayer(GameObject o, Graphics g) {
 		AIPlayer p = (AIPlayer) o;
 		

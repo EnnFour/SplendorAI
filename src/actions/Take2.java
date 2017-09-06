@@ -23,6 +23,7 @@ public class Take2 extends MouseAdapter {
 	private HumanPlayer h;
 	private Board b;
 	
+	/** Constructor which allows access to the game and the handler. */
 	public Take2(Game g, Handler handler) {
 		game = g;
 		this.handler = handler;
@@ -37,6 +38,7 @@ public class Take2 extends MouseAdapter {
 		}
 	}
 	
+	/** Determine which action to take based on what was clicked. */
 	public void mousePressed(MouseEvent e) {
 		int mx = e.getX();
 		int my = e.getY();
@@ -113,6 +115,7 @@ public class Take2 extends MouseAdapter {
 		} 
 	}
 	
+	/** Determine if the current move is valid. */
 	private boolean isValidMove() {
 		for(GameObject o : handler.getObjects()) {
 			if (o.getID() == ID.Player1) {
@@ -148,6 +151,7 @@ public class Take2 extends MouseAdapter {
 		
 	}
 	
+	/** Render the Menu. */
 	public void render(Graphics g) {
 		g.setColor(Color.BLACK);
 		g.fillOval(200, 200, 150, 150);
@@ -191,6 +195,7 @@ public class Take2 extends MouseAdapter {
 		g.drawString("Back", 365, 665);
 	}
 
+	/** Clear all modifications to the menu. */
 	private void reset() {
 		chosen = new int[]{0,0,0,0,0};
 		numchosen = 0;

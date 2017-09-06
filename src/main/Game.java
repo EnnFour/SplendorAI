@@ -27,6 +27,7 @@ public class Game extends Canvas implements Runnable{
 	public actions.AITurn aiView;
 	public actions.NobleVisit nobleView;
 	public actions.GameOver gameOverView;
+	public InfoMenu infoMenu;
 	
 	private boolean endReached;
 	private int turnsRemaining;
@@ -45,7 +46,8 @@ public class Game extends Canvas implements Runnable{
 		Purchase, //Spend Coins to get a card
 		Noble, //Nobles Come and Visit
 		GameOver, //Game is Over
-		Reset
+		Reset,
+		Info, //InfoMenu
 	};
 	
 	public STATE gameState = STATE.Main;
@@ -74,6 +76,7 @@ public class Game extends Canvas implements Runnable{
 		aiView = new actions.AITurn(this, handler);
 		nobleView = new actions.NobleVisit(this, handler);
 		gameOverView = new actions.GameOver(this, handler);
+		infoMenu = new InfoMenu(this, handler);
 		
 		this.addMouseListener(mainMenu);
 		if (this.getMouseListeners().length != 1) {
@@ -159,6 +162,8 @@ public class Game extends Canvas implements Runnable{
 		} else if (gameState == STATE.Reset) {
 			reset();
 			gameState = STATE.Main;
+		} else if (gameState == STATE.Info) {
+			infoMenu.tick();
 		}
 	}
 	
@@ -204,6 +209,8 @@ public class Game extends Canvas implements Runnable{
 			gameOverView.render(g);
 		} else if (gameState == STATE.Reset) {
 			
+		} else if (gameState == STATE.Info) {
+			infoMenu.render(g);
 		}
 		
 		g.dispose();

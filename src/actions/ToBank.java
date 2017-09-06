@@ -23,13 +23,14 @@ public class ToBank extends MouseAdapter {
 	private int[] coins;
 	private int[] offer;
 	
-	
+	/** Constructor that gives access to the game and the handler. */
 	public ToBank(Game g, Handler handler) {
 		game = g; 
 		this.handler = handler;
 		offer = new int[]{0,0,0,0,0,0};
 	}
 	
+	/** Perform actions based on what was clicked. */
 	public void mousePressed(MouseEvent e) {
 		int mx = e.getX();
 		int my = e.getY();
@@ -92,6 +93,7 @@ public class ToBank extends MouseAdapter {
 		
 	}
 	
+	/** Render the menu and display pertinent information. */
 	public void render(Graphics g) {
 		for (GameObject o : handler.getObjects()) {
 			if (o.getID() == ID.Player1) h = (HumanPlayer) o;
@@ -193,10 +195,12 @@ public class ToBank extends MouseAdapter {
 		g.drawString("Return Coins To Bank", 500, 175);
 	}
 	
+	/** Clear all modifications to the menu. */
 	private void reset() {
 		offer = new int[]{0,0,0,0,0,0};
 	}
 
+	/** Determine if the current move is a valid move. */
 	private boolean isValid() {
 		int x = 0;
 		for (int i : h.getCoins()) {
@@ -205,6 +209,7 @@ public class ToBank extends MouseAdapter {
 		return (x == 10);
 	}
 	
+	/** Add the given coin to the offer to the bank. */
 	private void addToOffer(int coin, int amt) {
 		if(offer[coin] + amt >= 0 && coins[coin] - amt >= 0){
 			offer[coin] += amt;

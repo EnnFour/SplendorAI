@@ -24,6 +24,7 @@ public class ReservesView extends MouseAdapter {
 	private int cost[];
 	private int missing;
 	
+	/** Constructor which gives access to the game and the handler. */
 	public ReservesView(Game g, Handler handler) {
 		game = g;
 		this.handler = handler;
@@ -32,6 +33,7 @@ public class ReservesView extends MouseAdapter {
 		numReserved = 0;
 	}
 	
+	/** Determine what was clicked and perform all corresponding actions. */
 	public void mousePressed(MouseEvent e) {
 		int mx = e.getX();
 		int my = e.getY();
@@ -89,6 +91,7 @@ public class ReservesView extends MouseAdapter {
 		
 	}
 	
+	/** Render the Menu. */
 	public void render(Graphics g) {
 		
 		for(GameObject o : handler.getObjects()) {
@@ -133,6 +136,7 @@ public class ReservesView extends MouseAdapter {
 		return false;
 	}
 	
+	/** Determine if the move is valid. */
 	private boolean isValid() {
 		if (numSelected != 1) return false;
 		for (int i = 0; i < 3; i++) {
@@ -143,12 +147,14 @@ public class ReservesView extends MouseAdapter {
 		return false;
 	}
 	
+	/** Clear all modifications to the Menu. */
 	private void reset() {
 		selected = new boolean[]{false, false, false};
 		numSelected = 0;
 		
 	}
 	
+	/** Does the player have the money to purchase card X in their reserves? */
 	private boolean hasMoney (int x) {
 		cost = h.getReserves().get(x).getCost();
 		missing = 0;
@@ -161,6 +167,7 @@ public class ReservesView extends MouseAdapter {
 		return true;
 	}
 	
+	/** Purchase the Ith card in the player's reserve */
 	private void purchase(int i) {
 		h.setDebt(h.getReserves().get(i).getCost().clone());
 		h.setRecentPurchase(h.getReserves().get(i));

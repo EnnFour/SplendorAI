@@ -179,8 +179,15 @@ public class AIPlayer extends Player{
 	}
 	
 	private void optimizeTakeTwo() {
-		//[0-4] represent taking 1 of a color, [10-14] represent taking 2 of a color.
-		PriorityQueue<MapNode<Integer, Double>> colorVals = new PriorityQueue<MapNode<Integer, Double>> (new Comparator<MapNode<Integer, Double>>() {
+
+		PriorityQueue<MapNode<Integer, Double>> singles = new PriorityQueue<MapNode<Integer, Double>> (new Comparator<MapNode<Integer, Double>>() {
+			@Override
+			public int compare(MapNode<Integer, Double> arg0, MapNode<Integer, Double> arg1) {
+				return (int) Double.compare(arg0.getValue(), arg1.getValue());
+			}
+		});
+		
+		PriorityQueue<MapNode<Integer, Double>> doubles = new PriorityQueue<MapNode<Integer, Double>> (new Comparator<MapNode<Integer, Double>>() {
 			@Override
 			public int compare(MapNode<Integer, Double> arg0, MapNode<Integer, Double> arg1) {
 				return (int) Double.compare(arg0.getValue(), arg1.getValue());
@@ -197,7 +204,7 @@ public class AIPlayer extends Player{
 		}
 		
 		for (int i = 0; i < 5; i++) {
-			if (validDoubles[i]) colorVals.add(new MapNode<Integer, Double>(i, -1 * computeTakeTwoValue(i)));
+			if (validDoubles[i]) doubles.add(new MapNode<Integer, Double>(i, -1 * computeTakeTwoValue(i)));
 		}
 		
 		for (int i = 0; i < 5; i++) {
@@ -215,26 +222,40 @@ public class AIPlayer extends Player{
 				value += (0.6) * (0.5) * (1 + boolToInt(isMostCost(topChoices[0], i)));
 			}
 		
-			if (validSingles[i]) colorVals.add(new MapNode<Integer, Double>(10 + i, -1 * value));
+			if (validSingles[i]) singles.add(new MapNode<Integer, Double>(i, -1 * value));
 		}
 		
-		int[] choices = new int[]{0,0,0,0,0};
+		int[] singleChoices = new int[]{0,0,0,0,0};
+		int[] doubleChoices = new int[]{0,0,0,0,0};
 		
-		int temp = colorVals.poll().getKey();
-		if (temp < 10) choices[temp] = 2;
-		if (numTrue(validSingles) == 1) {
-			while (temp > 10) temp = colorVals.poll().getKey();
-			choices[temp] = 2;
-		}
-		else {
-			choices[temp - 10] = 1;
-			temp = colorVals.poll().getKey();
-			while (temp < 10) temp = colorVals.poll().getKey();
+		double singleValue = 0;
+		double doubleValue = 0;
+		
+		if (singles.size() >= 2){
+			MapNode<Integer, Double> temp = singles.poll();
+			singleValue += temp.getValue();
+			singleChoices[temp.getKey()] = 1;
 			
-			choices[temp - 10] = 1;
+			temp = singles.poll();
+			singleValue += temp.getValue();
+			singleChoices[temp.getKey()] = 1;
 		}
 		
-		takeCoinsGivenChoices(choices);
+		if (doubles.size() >= 1) {
+			MapNode<Integer, Double> temp = doubles.poll();
+			doubleValue += (2 * temp.getValue());
+			doubleChoices[temp.getKey()] = 2;
+		}
+		
+		if (doubleValue >= singleValue) {
+			takeCoinsGivenChoices(doubleChoices);	
+		} else {
+			takeCoinsGivenChoices(singleChoices);
+		}
+		
+		
+		
+		
 	}
 
 	private boolean canTakeTwo() {
@@ -445,19 +466,22 @@ public class AIPlayer extends Player{
 		while (this.getNumCoins() > 10) {
 			
 			for (int i = 0; i < 5; i++) {
-				double value = 0;
 				
-				if (topChoices[0].getCost()[i] > 0) {
-					value += (0.5) * (1 + boolToInt(isMostCost(topChoices[0], i)));
+				if (coins[i] > 0) {
+					double value = 0;
+					
+					if (topChoices[0].getCost()[i] > 0) {
+						value += (0.5) * (1 + boolToInt(isMostCost(topChoices[0], i)));
+					}
+					if (topChoices[1].getCost()[i] > 0) {
+						value += (0.7) * (0.5) * (1 + boolToInt(isMostCost(topChoices[1], i)));
+					}
+					if (topChoices[2].getCost()[i] > 0) {
+						value += (0.6) * (0.5) * (1 + boolToInt(isMostCost(topChoices[2], i)));
+					}
+					
+					colorVals.add(new MapNode<Integer, Double>(i, value));
 				}
-				if (topChoices[1].getCost()[i] > 0) {
-					value += (0.7) * (0.5) * (1 + boolToInt(isMostCost(topChoices[1], i)));
-				}
-				if (topChoices[2].getCost()[i] > 0) {
-					value += (0.6) * (0.5) * (1 + boolToInt(isMostCost(topChoices[2], i)));
-				}
-				
-				colorVals.add(new MapNode<Integer, Double>(i, value));
 			}
 			
 			int col = colorVals.poll().getKey();

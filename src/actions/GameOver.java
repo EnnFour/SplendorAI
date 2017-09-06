@@ -25,6 +25,7 @@ public class GameOver extends MouseAdapter {
 		
 	}
 	
+	/** Perform actions based on what was clicked. */
 	public void mousePressed(MouseEvent e) {
 		int mx = e.getX();
 		int my = e.getY();
@@ -48,9 +49,8 @@ public class GameOver extends MouseAdapter {
 		
 	}
 	
+	/** Render the Game Over Menu. */
 	public void render(Graphics g) {
-		
-		
 		
 		g.setColor(Color.BLACK);
 		g.setFont(new Font("arial", 1, 90));
@@ -58,13 +58,17 @@ public class GameOver extends MouseAdapter {
 		g.setFont(new Font("arial", 1, 60));
 		for (GameObject o : handler.getObjects()) {
 			if (o.getID() == ID.Player1) {
-				g.drawString("You had " + Integer.toString(((Player) o).getVictoryPoints()) + " Victory Points", 550, 200);
+				String s = "You had " + Integer.toString(((Player) o).getVictoryPoints()) + " Victory Points";
+				g.drawString(s, 550, 200);
 			} else if (o.getID() == ID.Player2) {
-				g.drawString("Player 2 had " + Integer.toString(((Player) o).getVictoryPoints()) + " Victory Points", 500, 280);
+				String s = "Player 2 had " + Integer.toString(((Player) o).getVictoryPoints()) + " Victory Points";
+				g.drawString(s, 500, 280);
 			} else if (o.getID() == ID.Player3) {
-				g.drawString("Player 3 had " + Integer.toString(((Player) o).getVictoryPoints()) + " Victory Points", 500, 360);
+				String s = "Player 3 had " + Integer.toString(((Player) o).getVictoryPoints()) + " Victory Points";
+				g.drawString(s, 500, 360);
 			} else if (o.getID() == ID.Player4) {
-				g.drawString("Player 4 had " + Integer.toString(((Player) o).getVictoryPoints()) + " Victory Points", 500, 440);
+				String s = "Player 4 had " + Integer.toString(((Player) o).getVictoryPoints()) + " Victory Points";
+				g.drawString(s, 500, 440);
 			}
 		}
 		

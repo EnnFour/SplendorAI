@@ -42,7 +42,7 @@ public class MainMenu extends MouseAdapter{
 					throw new IllegalStateException("More than one MouseListener");
 				}
 				game.gameState = STATE.Game;
-			} else if (menuCollision(mx, my, 835, 750, 250, 100)) {
+			} else if (menuCollision(mx, my, 355, 750, 250, 100)) {
 				//vs 3 ai
 				create3();
 				game.removeMouseListener(game.mainMenu);
@@ -51,6 +51,10 @@ public class MainMenu extends MouseAdapter{
 					throw new IllegalStateException("More than one MouseListener");
 				}
 				game.gameState = STATE.Game;
+			} else if (menuCollision(mx, my, 1315, 750, 250, 100)) {
+				game.removeMouseListener(game.mainMenu);
+				game.addMouseListener(game.infoMenu);
+				game.gameState = STATE.Info;
 			}
 	}
 	
@@ -77,25 +81,30 @@ public class MainMenu extends MouseAdapter{
 	/**Render the main menu. */
 	public void render(Graphics g) {
 		g.setColor(Color.WHITE);
-		g.setFont(new Font("arial", 1, 50));
+		g.fillRect(355, 575, 250, 100);
+		g.fillRect(1315, 575, 250, 100);
+		g.fillRect(355, 750, 250, 100);
+		g.fillRect(1315, 750, 250, 100);
+		
+		g.setColor(Color.BLACK);
+		g.setFont(new Font("arial", 1, 80));
 	
 		//Splendor
-		g.drawRect(550, 200, 810, 100);
+	
 		g.drawString("Splendor", 840, 275);
 		
-		g.setFont(new Font("arial", 1, 30));
+		g.setFont(new Font("arial", 1, 40));
 		//Alex Welty
-		g.drawRect(710, 325, 500, 100);
-		g.drawString("Alex Welty", 875, 350);
+		g.drawString("Alex Welty", 900, 350);
 		//Vs 1 AI
-		g.drawRect(355, 575, 250, 100);
-		g.drawString("VS 1 AI", 425, 635);
+		g.drawString("VS 1 AI", 415, 635);
 		//vs 2 ai
-		g.drawRect(1315, 575, 250, 100);
-		g.drawString("VS 2 AI", 1385, 635);
+		g.drawString("VS 2 AI", 1375, 635);
 		//vs 3 ai
-		g.drawRect(835, 750, 250, 100);
-		g.drawString("VS 3 AI", 905, 810);
+		g.drawString("VS 3 AI", 415, 810);
+		//info
+		g.drawString("INFO", 1390, 810);
+		
 	}
 	
 	/**Initializes the handler for a 2 player game. */
